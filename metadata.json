@@ -1,0 +1,6 @@
+{
+  "name": "OmniChat",
+  "description": "Universal real-time public chat where messages from anyone across the world are shared live.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,106 @@
+{
+  "entities": {
+    "Room": {
+      "title": "Room",
+      "description": "Universal public chat rooms or topic channels",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "isPublic": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "lastMessageText": { "type": "string" },
+        "lastMessageTime": { "type": "string", "format": "date-time" },
+        "lastMessageSender": { "type": "string" }
+      },
+      "required": ["name", "isPublic", "createdAt"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Universal public message sent to a room visible to all users",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "roomId": { "type": "string" },
+        "senderId": { "type": "string" },
+        "senderName": { "type": "string" },
+        "senderAvatar": { "type": "string" },
+        "text": { "type": "string" },
+        "replyToText": { "type": "string" },
+        "replyToSender": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["roomId", "senderId", "senderName", "text", "createdAt"]
+    },
+    "StrangerSession": {
+      "title": "StrangerSession",
+      "description": "1-on-1 random stranger chat session like Omegle",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "status": { "type": "string", "enum": ["waiting", "connected", "ended"] },
+        "user1Id": { "type": "string" },
+        "user1Name": { "type": "string" },
+        "user2Id": { "type": "string" },
+        "user2Name": { "type": "string" },
+        "topic": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "connectedAt": { "type": "string", "format": "date-time" },
+        "endedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["status", "user1Id", "user1Name", "createdAt"]
+    },
+    "StrangerMessage": {
+      "title": "StrangerMessage",
+      "description": "Direct message sent between matched strangers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "sessionId": { "type": "string" },
+        "senderId": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["sessionId", "senderId", "text", "createdAt"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Public profile and presence information of a chatter",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "displayName": { "type": "string" },
+        "avatar": { "type": "string" },
+        "customBio": { "type": "string" },
+        "isOnline": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "displayName", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/rooms/{roomId}": {
+      "schema": { "$ref": "#/entities/Room" },
+      "description": "Collection of public chat channels including the global universal chat"
+    },
+    "/rooms/{roomId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/Message" },
+      "description": "Universal public messages readable by all users"
+    },
+    "/stranger_sessions/{sessionId}": {
+      "schema": { "$ref": "#/entities/StrangerSession" },
+      "description": "Omegle-like 1-on-1 random stranger matching sessions"
+    },
+    "/stranger_sessions/{sessionId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/StrangerMessage" },
+      "description": "Private messages exchanged between 2 matched strangers"
+    },
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "User presence and profile representation"
+    }
+  }
+}

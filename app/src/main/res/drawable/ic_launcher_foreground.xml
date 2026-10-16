@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Drop shadow for bubbles -->
+    <path
+        android:fillColor="#33000000"
+        android:pathData="M34,36 h26 c6.6,0 12,5.4 12,12 v10 c0,6.6 -5.4,12 -12,12 h-14 l-10,9 v-9 h-2 c-6.6,0 -12,-5.4 -12,-12 v-10 c0,-6.6 5.4,-12 12,-12 z" />
+
+    <!-- Primary Chat Bubble (Vibrant Gradient Cyan to Blue) -->
+    <path
+        android:pathData="M32,34 h26 c6.6,0 12,5.4 12,12 v10 c0,6.6 -5.4,12 -12,12 h-14 l-10,9 v-9 h-2 c-6.6,0 -12,-5.4 -12,-12 v-10 c0,-6.6 5.4,-12 12,-12 z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="20"
+                android:startY="34"
+                android:endX="70"
+                android:endY="68"
+                android:type="linear">
+                <item android:offset="0.0" android:color="#38BDF8" />
+                <item android:offset="1.0" android:color="#2563EB" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Secondary Overlapping Bubble (Vibrant Purple to Magenta) -->
+    <path
+        android:pathData="M52,44 h24 c5.5,0 10,4.5 10,10 v9 c0,5.5 -4.5,10 -10,10 h-3 v7 l-8,-7 h-13 c-5.5,0 -10,-4.5 -10,-10 v-9 c0,-5.5 4.5,-10 10,-10 z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="42"
+                android:startY="44"
+                android:endX="86"
+                android:endY="80"
+                android:type="linear">
+                <item android:offset="0.0" android:color="#C084FC" />
+                <item android:offset="1.0" android:color="#7C3AED" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Chat dots inside primary bubble -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M35,52a3,3 0 1,0 6,0a3,3 0 1,0 -6,0 M46,52a3,3 0 1,0 6,0a3,3 0 1,0 -6,0 M57,52a3,3 0 1,0 6,0a3,3 0 1,0 -6,0" />
+
+    <!-- Chat pulse inside secondary bubble -->
+    <path
+        android:fillColor="#E0E7FF"
+        android:pathData="M59,59a2.5,2.5 0 1,0 5,0a2.5,2.5 0 1,0 -5,0 M69,59a2.5,2.5 0 1,0 5,0a2.5,2.5 0 1,0 -5,0" />
+</vector>
