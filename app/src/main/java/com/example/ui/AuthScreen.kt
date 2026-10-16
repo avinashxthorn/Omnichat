@@ -84,6 +84,17 @@ fun AuthScreen(
   var isLoading by remember { mutableStateOf(false) }
   var errorMessage by remember { mutableStateOf<String?>(null) }
 
+  // Attempt silent auto-sign in on launch if account already authorized
+  androidx.compose.runtime.LaunchedEffect(Unit) {
+    attemptAutoSignIn(
+      context = context,
+      credentialManager = credentialManager,
+      scope = coroutineScope,
+      onAuthSuccess = onAuthSuccess,
+      onUnauthenticated = {}
+    )
+  }
+
   Surface(
     modifier = Modifier.fillMaxSize(),
     color = BackgroundDark
@@ -311,6 +322,50 @@ private fun FeatureRow(
         fontSize = 12.sp,
         lineHeight = 16.sp
       )
+    }
+  }
+}
+
+fun attemptAutoSignIn(
+  context: Context,
+  credentialManager: CredentialManager,
+  onAuthSuccess: () -> Unit,
+  onUnauthenticated: () -> Unit,
+  scope: CoroutineScope
+) {
+  if (Firebase.auth.currentUser != null) {
+    onAuthSuccess()
+    return
+  }
+  val clientId = try {
+    context.getString(R.string.default_web_client_id)
+  } catch (e: Exception) {
+    onUnauthenticated()
+    return
+  }
+
+  val googleIdOption = GetGoogleIdOption.Builder()
+    .setFilterByAuthorizedAccounts(true)
+    .setServerClientId(clientId)
+    .setAutoSelectEnabled(true)
+    .build()
+
+  val request = GetCredentialRequest.Builder().addCredentialOption(googleIdOption).build()
+
+  scope.launch {
+    try {
+      val result = credentialManager.getCredential(context, request)
+      val credential = result.credential
+      if (credential is CustomCredential && credential.type == TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+        val googleIdToken = GoogleIdTokenCredential.createFrom(credential.data).idToken
+        val authCredential = GoogleAuthProvider.getCredential(googleIdToken, null)
+        Firebase.auth.signInWithCredential(authCredential).await()
+        onAuthSuccess()
+      } else {
+        onUnauthenticated()
+      }
+    } catch (e: Exception) {
+      onUnauthenticated()
     }
   }
 }
